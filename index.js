@@ -8,7 +8,7 @@ const app = express();
 var bcrypt = require("bcryptjs");
 
 var corsOptions = {
-  origin: "http://localhost:3000"
+  origin: "https://leen-khadamaty.herokuapp.com/"
 };
 
 app.use(cors(corsOptions));
@@ -53,7 +53,6 @@ async function initial() {
         Admin.create(user)
       })
 };
-
 
 
 // set port, listen for requests
