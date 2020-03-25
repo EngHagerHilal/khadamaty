@@ -11,6 +11,11 @@ module.exports = function(app) {
     next();
 });
 
+app.get(
+  "/test",
+  controller.allAccess
+);
+
 app.post(
   "/api/test/addcustomerservice",
   [authJwt.verifyToken, authJwt.isAdmin],

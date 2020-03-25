@@ -6,11 +6,11 @@ const Customerservice = db.customerservice ;
 var bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config.js");
-/*
+
 exports.allAccess = (req, res) => {
     res.status(200).send("Public Content.");
   };
-
+/*
 exports.customerBoard = (req, res) => {
     res.status(200).send("Customers Content.");
 };
