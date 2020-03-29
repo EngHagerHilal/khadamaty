@@ -10,6 +10,17 @@ const config = require("../config/auth.config.js");
 exports.allAccess = (req, res) => {
     res.status(200).send("Public Content.");
   };
+
+
+
+exports.allCustomers =  (req , res) => {
+  Customer.findAll().then(customers => res.send({data : customers}));
+}  
+
+
+exports.allShops =  (req , res) => {
+  Shop.findAll().then(shops => res.send({data : shops}));
+}
 /*
 exports.customerBoard = (req, res) => {
     res.status(200).send("Customers Content.");
@@ -93,10 +104,44 @@ exports.edit = ( req , res) => {
   Customer.update ( req.body ,{ where : { userId : userId} });
   Shop.update ( req.body ,{ where : { userId : userId} });
   res.send({msg : "updated"})
+
 }
 
-/*
-exports.getProfile = ( req , res) => {
+
+exports.getMyProfile = ( req , res) => {
+  let token = req.headers["x-access-token"];
+  jwt.verify(token, config.secret, (err, decoded) => {
+    console.log(decoded)
+    userId = decoded.id;
+    role = decoded.role
+  });
+
+  User.findByPk ( userId).then((user) =>
+{
+  Customer.findAll( { UserId : userId }).then (customers)
+})
+res.send ( { name : customers[0].name  , email : user.email , username :user.username , password : user.password , phone : user.phone , city : customer.city , addresse : customer.addresse })
+
+};
+
+
+exports.getMyShopProfile = ( req , res) => {
+  let token = req.headers["x-access-token"];
+  jwt.verify(token, config.secret, (err, decoded) => {
+    console.log(decoded)
+    userId = decoded.id;
+    role = decoded.role
+  });
+
+  User.findByPk ( userId).then((user) =>
+{
+  Shop.findAll( { UserId : userId }).then (shops)
+})
+
+res.send ( { name : shops[0].name  , email : user.email , username :user.username , password : user.password , phone : user.phone , city : shops[0].city , addresse : shops[0].addresse , ownername : shops[0].ownername , description : shops[0].description , verified : shop[0].verified})
+};
+
+exports.exploreShop = ( req , res) =>{
 
   let token = req.headers["x-access-token"];
   jwt.verify(token, config.secret, (err, decoded) => {
@@ -105,19 +150,12 @@ exports.getProfile = ( req , res) => {
     role = decoded.role
   });
 
-  User.findByPk ( userId);
-  //Customer.update ( req.body ,{ where : { userId : userId} });
-  //Shop.update ( req.body ,{ where : { userId : userId} });
-  res.send({msg : "updated"})
+  shopid = req.params.shopid ;
+  Shop.findAll({ where : {shopid : shopid}}).then( shops => {
+    User.findByPk(shops[0].userId).then(user => { 
+    res.send ( { name : shops[0].name  ,  phone : user.phone , addresse : shops[0].addresse , ownername : shops[0].ownername , description : shops[0].description })
+  })
+})
 }
-*/
-
-
-
-
-
-
-
-
 
 

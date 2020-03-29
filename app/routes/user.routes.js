@@ -15,34 +15,63 @@ app.get(
   "/test",
   controller.allAccess
 );
+app.get(
+  "/getmyprofile",
+  [authJwt.verifyToken, authJwt.isCustomer],
+  controller.getMyProfile
+);
+
+app.get(
+  "/getmyshopprofile",
+  [authJwt.verifyToken, authJwt.isShop],
+  controller.getMyShopProfile
+);
+app.get(
+  "/allcustomers",
+  [authJwt.verifyToken, authJwt.isAdmin],
+  controller.allCustomers
+);
+
+app.get(
+  "/allshops",
+  [authJwt.verifyToken, authJwt.isAdmin],
+  controller.allShops
+);
+
+
+app.get(
+  "/exploreshop/:shopid",
+  [authJwt.verifyToken ],
+  controller.exploreShop
+);
 
 app.post(
-  "/api/test/addcustomerservice",
+  "/addcustomerservice",
   [authJwt.verifyToken, authJwt.isAdmin],
   controller.addCustomerservice
 );
 
 app.post(
-  "/api/test/verifyShop/",
+  "/verifyShop/",
   [authJwt.verifyToken, authJwt.isAdmin],
   controller.verifyShop
 );
 
 app.post(
-  "/api/test/deactivateShop/",
+  "/deactivateShop/",
   [authJwt.verifyToken, authJwt.isAdmin],
   controller.deactivateShop
 );
 
 
 app.post(
-  "/api/test/deleteShop/",
+  "/deleteShop/",
   [authJwt.verifyToken, authJwt.isAdmin],
   controller.deleteShop
 );
 
 app.put(
-  "/api/test/editprofile/",
+  "/editprofile/",
   [authJwt.verifyToken],
   controller.edit
 );

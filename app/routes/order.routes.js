@@ -15,50 +15,67 @@ app.use(function(req, res, next) {
 
 
 app.post(
-    "/api/test/addOrder/",
+    "/addOrder/",
     [authJwt.verifyToken, authJwt.isCustomer],
     controller.addOrder
 );
+app.patch(
+    "/createOrder/",
+    [authJwt.verifyToken, authJwt.isCustomer],
+    controller.CreateOrder
+);
 
 
-app.post(
-    "/api/test/addShopToOrder/",
+app.patch(
+    "/addShopToOrder/",
     [authJwt.verifyToken, authJwt.isCustomer],
     controller.addShopToOrder 
 );
 
-app.put(
-    "/api/test/acceptOrder/",
+app.patch(
+    "/acceptOrder/",
     [authJwt.verifyToken, authJwt.isShop],
     controller.acceptOrder 
 );
 
-app.put(
-    "/api/test/completeOrder/",
+app.patch(
+    "/completeOrder/",
     [authJwt.verifyToken, authJwt.isShop],
     controller.CompleteOrder 
 );
-app.put(
-    "/api/test/rejectOrder/",
+app.patch(
+    "/rejectOrder/",
     [authJwt.verifyToken, authJwt.isShop],
     controller.rejectOrder 
 );
 
 app.get(
-    "/api/test/filterorders/",
+    "/filterorders/",
     [authJwt.verifyToken],
     controller.filter 
 );
 
 app.get(
-    "/api/test/showavailableshops/",
+    "/showavailableshops/:orderid/:service",
     [authJwt.verifyToken , authJwt.isCustomer ],
     controller.showAvailableShops 
 );
 
 app.get(
-    "/api/test/showshoporders/",
+    "/showshoporders/",
     [authJwt.verifyToken , authJwt.isShop],
     controller.showShopOrders 
 );
+app.get(
+    "/Myorders" ,
+    [ authJwt.verifyToken , authJwt.isCustomer] ,
+    controller.showMyOrders
+)
+
+app.get(
+    "/Allorders" ,
+    [ authJwt.verifyToken , authJwt.isAdmin] ,
+    controller.showAllOrders
+)
+
 };

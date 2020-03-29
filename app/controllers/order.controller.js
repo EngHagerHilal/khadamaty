@@ -17,15 +17,27 @@ exports.addOrder = (req, res) => {
         //res.json(decoded)
       });
     Order.create( req.body).then ((order)=>{
-     Order.update( { userId: userid } , { where : {id : order.id}}).then((order)=> res.send({msg : "Order Created successfully!" , id : order.id})).catch(err => res.send({msg : err.message}))
+     Order.update( { userId: userid } , { where : {id : order.id}}).then(()=> res.send({msg : "Order Created successfully!" , data : order})).catch(err => res.send({msg : err.message}))
     })
+};
+
+exports.CreateOrder = (req, res) => {
+    let token = req.headers["x-access-token"];
+    jwt.verify(token, config.secret, (err, decoded) => {
+        userid = decoded.id;
+        //res.json(decoded)
+      });
+      orderid = req.body.orderid;
+     Order.update( req.body , { where : {id : orderid}}).then((order)=> res.send({msg : "Order Created successfully!" , id : order[0].id})).catch(err => res.send({msg : err.message}))
+    
 };
 
 exports.addShopToOrder = ( req , res ) => {
     orderid = req.body.id ;
     shopname = req.body.shop;
-    Shop.findAll({ where: {shopname : shopname } }).then((shop) => res.send({ shopId : shop.id})).catch(err => res.send({msg : err.message}));
-    Order.update({shopShopId : shop.id} , { where: { id: orderid }});
+    Shop.findAll({ where: {name : shopname } }).then((shops) => { 
+    Order.update({shopShopid : shops[0].shopid} , { where: { id: orderid }})
+})
 }
 
 /*
@@ -103,18 +115,35 @@ exports.filter = ( req , res ) => {
     });
 };
 
+exports.showAllOrders = (req , res) =>{
+
+    Order.findAll().then(orders => res.send( {data : orders}));
+}
+
+
+
+
 exports.showAvailableShops = ( req , res ) => {
     let token = req.headers["x-access-token"];
 
     jwt.verify(token, config.secret, (err, decoded) => {
       userId = decoded.id;
     });
+    orderid = req.params.orderid ;
+    service = req.params.service ;
+    Order.findAll( {where : {userId : userId}}).then((orders) =>
     
-    Customer.findAll( {where : {userId : userId}}).then((customers) => res.send ({ city : customers[0].city} ) ).catch( err=>res.send({ msg : err.message}));
-    service = req.body.service ;
-    Service.findAll({ where: {title : service } }).then((service) => res.send({ serviceId : service.id})).catch(err => res.send({msg : err.message}));
+    {
+        // res.send ({ city : orders[0].city} ) 
+    city = orders[0].city;
+    Shop.findAll(  { where : {service : service , city : orders[0].city}  }).then((shops) => res.send( {data : shops})).catch( err => res.send({msg : err.message}));
 
-    Shop.findAll( {serviceId : serviceId , city : city  }).then((shops) => res.send( {data : shops})).catch( err => res.send({msg : err.message}));
+}
+).catch( err=>res.send({ msg : err.message}));
+
+   // Customer.findAll( {where : {userId : userId}}).then((customers) => res.send ({ city : customers[0].city} ) ).catch( err=>res.send({ msg : err.message}));
+    
+   // Service.findAll({ where: {title : service } }).then((service) => res.send({ serviceId : service.id})).catch(err => res.send({msg : err.message}));
 }
 
 
@@ -126,5 +155,13 @@ exports.showShopOrders = ( req , res ) => {
     });
     Shop.findAll({userId:userId}).then((result)=> shopid = result[0].shopid)
     Order.findAll( {shopShopId : shopid }).then((orders) => res.send( {data : orders})).catch( err => res.send({msg : err.message}));
+}
 
+exports.showMyOrders = ( req , res ) => {
+    let token = req.headers["x-access-token"];
+    let id = null ;
+    jwt.verify(token, config.secret, (err, decoded) => {
+      userId = decoded.id;
+    });
+    Order.findAll( {userId : userId }).then((orders) => res.send( {data : orders})).catch( err => res.send({msg : err.message}));
 }

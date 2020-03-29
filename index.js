@@ -6,12 +6,12 @@ const User = db.user;
 const Admin = db.admin;
 const app = express();
 var bcrypt = require("bcryptjs");
-
+/*
 var corsOptions = {
-  origin: "https://leen-khadamaty.herokuapp.com/"
+  origin: "http://localhost:3000"
 };
-
-app.use(cors(corsOptions));
+*/
+app.use(cors());
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
@@ -36,7 +36,7 @@ db
   .query('SET FOREIGN_KEY_CHECKS = 0', {raw: true})
   .then(async function() {
  // await db.sequelize.sync({force: true})
-   return await initial();
+   //return await initial();
 });  
 
 
@@ -48,7 +48,7 @@ async function initial() {
       username : "admin" , 
       password: bcrypt.hashSync("admin", 8) ,
       role : "admin" ,
-      phone : "966506486374"
+      phone : "966506486474"
       }).then(user => {
         Admin.create(user)
       })
