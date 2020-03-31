@@ -4,7 +4,6 @@ module.exports = {
     PASSWORD: "us-cdbr-iron-east-01",
     DB: "heroku_8c183c364711755",
     dialect: "mysql" ,
-    port : "2083" ,
     retry  : {
 		match: [
 			/ETIMEDOUT/,
