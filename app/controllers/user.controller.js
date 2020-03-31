@@ -174,7 +174,7 @@ exports.exploreShop = ( req , res) =>{
   shopid = req.params.shopid ;
   Shop.findAll({ where : {shopid : shopid}}).then( shops => {
     User.findByPk(shops[0].userId).then(user => { 
-    res.send ( { name : shops[0].name  ,  phone : user.phone , addresse : shops[0].addresse , ownername : shops[0].ownername , description : shops[0].description })
+    res.send ( {  shopid : shops[0].shopid , name : shops[0].name  ,  phone : user.phone , addresse : shops[0].addresse , ownername : shops[0].ownername , description : shops[0].description })
   })
 })
 }

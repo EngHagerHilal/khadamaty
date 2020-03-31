@@ -56,7 +56,7 @@ app.get(
 );
 
 app.get(
-    "/showavailableshops/:orderid/:service",
+    "/showavailableshops/:city/:service",
     [authJwt.verifyToken , authJwt.isCustomer ],
     controller.showAvailableShops 
 );

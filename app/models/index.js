@@ -1,15 +1,6 @@
 const dbConfig = require("../config/db.config.js");
 const Sequelize = require("sequelize");
-if (process.env.HEROKU_POSTGRESQL_BRONZE_URL) {
-  sequelize =new Sequelize(process.env.HEROKU_POSTGRESQL_BRONZE_URL,
-    {
-      dialect: "postgres" || "mysql",
-      
-      port: 5432,
-      host: "ec2-34-200-101-236.compute-1.amazonaws.com",
-      logging: true //false
-   });
-  } else {
+
  sequelize = new Sequelize( dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
   port : dbConfig.port,
@@ -24,7 +15,7 @@ if (process.env.HEROKU_POSTGRESQL_BRONZE_URL) {
   timestamps: true
 },
 } );
-}
+
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
@@ -53,18 +44,7 @@ db.customerservice.belongsTo(db.user);
 db.customer.belongsTo(db.user);
 
 db.order.belongsTo(db.user , {
-  as: 'user',
-  foreignKey: db.user.id 
-});
 
-db.order.belongsTo(db.user , {
-  as: 'phone',
-  foreignKey: db.user.phone 
-});
-
-db.order.belongsTo(db.user , {
-  as: 'username',
-  foreignKey: db.user.username
 });
 
 db.order.belongsTo(db.shop);

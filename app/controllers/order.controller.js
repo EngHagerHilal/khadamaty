@@ -17,10 +17,12 @@ exports.addOrder = (req, res) => {
         userid = decoded.id;
         //res.json(decoded)
       });
-    
+
     Order.create( req.body).then ((order)=>{
         User.findByPk(userid).then(user => {
-     Order.update( { userId: userid , phoneId : user.phone , usernameId : user.username  } , { where : {id : order.id}}).then(()=> res.send({msg : "Order Created successfully!" , data : order})).catch(err => res.send({msg : err.message}))
+            console.log(user.phone) ;
+            console.log(user.username);
+     Order.update( { userId: userid , phone : user.phone , username : user.username  } , { where : {id : order.id}}).then(()=> res.send({msg : "Order Created successfully!" , data : order})).catch(err => res.send({msg : err.message}))
     })
 });
 };
@@ -133,16 +135,17 @@ exports.showAvailableShops = ( req , res ) => {
     jwt.verify(token, config.secret, (err, decoded) => {
       userId = decoded.id;
     });
-    orderid = req.params.orderid ;
+    city = req.params.city ;
     service = req.params.service ;
-    Order.findAll( {where : {userId : userId}}).then((orders) =>
     
-    {
+    //Order.findAll( {where : {userId : userId}}).then((orders) =>
+    
+    //{
         // res.send ({ city : orders[0].city} ) 
-    city = orders[0].city;
-    Shop.findAll(  { where : {service : service , city : orders[0].city , verified : true}  }).then((shops) => res.send( {data : shops})).catch( err => res.send({msg : err.message}));
-}
-).catch( err=>res.send({ msg : err.message}));
+   // city = orders[0].city;
+    Shop.findAll(  { where : {service : service , city : city , verified : true}  }).then((shops) => res.send( {data : shops})).catch( err => res.send({msg : err.message}));
+//}
+//).catch( err=>res.send({ msg : err.message}));
 
    // Customer.findAll( {where : {userId : userId}}).then((customers) => res.send ({ city : customers[0].city} ) ).catch( err=>res.send({ msg : err.message}));
     
