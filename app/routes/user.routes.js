@@ -76,4 +76,10 @@ app.patch(
   controller.edit
 );
 
+app.get(
+  "/getadminprofile/" ,
+  [authJwt.verifyToken],
+  controller.getAdminProfile
+)
+
 };

@@ -2,6 +2,7 @@ const db = require("../models");
 const Service = db.service;
 const Customer = db.customer;
 const Shop = db.shop;
+const User = db.user;
 const Op = db.Sequelize.Op;
 const Subservice = db.subservice;
 const Order = db.order;
@@ -167,5 +168,5 @@ exports.showMyOrders = ( req , res ) => {
     jwt.verify(token, config.secret, (err, decoded) => {
       userId = decoded.id;
     });
-    Order.findAll( {userId : userId }).then((orders) => res.send( {data : orders})).catch( err => res.send({msg : err.message}));
+    Order.findAll( {where :{userId : userId }}).then((orders) => res.send( {data : orders})).catch( err => res.send({msg : err.message}));
 }

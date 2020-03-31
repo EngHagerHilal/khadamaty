@@ -98,11 +98,11 @@ exports.edit = ( req , res) => {
     userId = decoded.id;
   });
 
-  User.update( req.body ,{ where : { id : userId} });
+  User.update( { username : req.body.username , email : req.body.email , phone : req.body.phone } ,{ where : { id : userId} });
   Customer.update ( req.body ,{ where : { userId : userId} });
   Shop.update ( req.body ,{ where : { userId : userId} });
+  User.update (  {password: bcrypt.hashSync(req.body.password, 8)} ,{ where : {id : userId} } );
   res.send({msg : "updated"})
-
 }
 
 
@@ -114,8 +114,10 @@ exports.getMyProfile = ( req , res) => {
 
   User.findByPk ( userId).then((user) =>
 {
-  Customer.findAll( { UserId : userId }).then (customers =>
+  Customer.findAll({ where :{ UserId : userId }}).then (customers =>
+
     {
+      console.log(customers)
       res.send ( { name : customers[0].name  , email : user.email , username :user.username , password : user.password , phone : user.phone , city : customers[0].city , addresse : customers[0].addresse })
 
     })
@@ -123,6 +125,21 @@ exports.getMyProfile = ( req , res) => {
 });
 };
 
+
+exports.getAdminProfile = ( req , res) => {
+  let token = req.headers["x-access-token"];
+  jwt.verify(token, config.secret, (err, decoded) => {
+    console.log(decoded)
+    userId = decoded.id;
+
+  User.findByPk ( userId).then((user) =>
+{
+  
+      res.send ( {  email : user.email , username :user.username , password : user.password , phone : user.phone })
+
+})
+});
+};
 
 exports.getMyShopProfile = ( req , res) => {
   let token = req.headers["x-access-token"];
@@ -134,10 +151,15 @@ exports.getMyShopProfile = ( req , res) => {
 
   User.findByPk ( userId).then((user) =>
 {
-  Shop.findAll( { UserId : userId }).then (shops)
+  Shop.findAll( {where :{ UserId : userId }}).then ((shops) =>{
+    console.log(shops[0]);
+
+    res.send ( { name : shops[0].name  , email : user.email , username :user.username , password : user.password , phone : user.phone , city : shops[0].city , addresse : shops[0].addresse , ownername : shops[0].ownername , service : shops[0].service , description : shops[0].description })
+
+  })
 })
 
-res.send ( { name : shops[0].name  , email : user.email , username :user.username , password : user.password , phone : user.phone , city : shops[0].city , addresse : shops[0].addresse , ownername : shops[0].ownername , description : shops[0].description , verified : shop[0].verified})
+//res.send ( { name : shops[0].name  , email : user.email , username :user.username , password : user.password , phone : user.phone , city : shops[0].city , addresse : shops[0].addresse , ownername : shops[0].ownername , description : shops[0].description , verified : shop[0].verified})
 };
 
 exports.exploreShop = ( req , res) =>{
