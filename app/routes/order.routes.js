@@ -77,5 +77,4 @@ app.get(
     [ authJwt.verifyToken , authJwt.isAdmin] ,
     controller.showAllOrders
 )
-
 };

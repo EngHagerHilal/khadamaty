@@ -9,9 +9,7 @@ const config = require("../config/auth.config.js");
 
 exports.allAccess = (req, res) => {
     res.status(200).send("Public Content.");
-  };
-
-
+};
 
 exports.allCustomers =  (req , res) => {
   Customer.findAll().then(customers => res.send({data : customers}));
@@ -41,7 +39,7 @@ User.create(
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8) ,
     role : "customerservice"
-  }).then((user) => {
+}).then((user) => {
     console.log (user.id)
     Customerservice.create ({ 'userId' : user.id }).catch((err)=> res.send(err))
     Customerservice.update ( req.body ,{ where : { userId : user.id}}).catch((err) =>  res.send(err))
@@ -100,7 +98,7 @@ exports.edit = ( req , res) => {
     userId = decoded.id;
   });
 
-  User.update( req.body ,{ where : { userId : userId} });
+  User.update( req.body ,{ where : { id : userId} });
   Customer.update ( req.body ,{ where : { userId : userId} });
   Shop.update ( req.body ,{ where : { userId : userId} });
   res.send({msg : "updated"})
@@ -113,15 +111,16 @@ exports.getMyProfile = ( req , res) => {
   jwt.verify(token, config.secret, (err, decoded) => {
     console.log(decoded)
     userId = decoded.id;
-    role = decoded.role
-  });
 
   User.findByPk ( userId).then((user) =>
 {
-  Customer.findAll( { UserId : userId }).then (customers)
-})
-res.send ( { name : customers[0].name  , email : user.email , username :user.username , password : user.password , phone : user.phone , city : customer.city , addresse : customer.addresse })
+  Customer.findAll( { UserId : userId }).then (customers =>
+    {
+      res.send ( { name : customers[0].name  , email : user.email , username :user.username , password : user.password , phone : user.phone , city : customers[0].city , addresse : customers[0].addresse })
 
+    })
+})
+});
 };
 
 
@@ -130,7 +129,7 @@ exports.getMyShopProfile = ( req , res) => {
   jwt.verify(token, config.secret, (err, decoded) => {
     console.log(decoded)
     userId = decoded.id;
-    role = decoded.role
+
   });
 
   User.findByPk ( userId).then((user) =>

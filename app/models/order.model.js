@@ -27,7 +27,7 @@ module.exports = (sequelize, Sequelize) => {
         values : ['Electrical' , 'Plumbing' , 'Air Conditioning' , 'Construction', 'Home Appliances', 'Electronics', 'Decoration', 'Upholstery', 'Curtains', 'Swimming Pool', 'Tiles', 'LandScape', 'Aluminum and Glass', 'Wrought Iron', 'Carpentry', 'Move and installation of Furniture', 'Umbrellas and Tents', 'Designing', 'Cleaning', 'Painting'  ],
         allowNull: false
     }
-    },
+    }
 ); 
     return Order;
 };

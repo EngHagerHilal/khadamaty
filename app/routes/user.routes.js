@@ -70,7 +70,7 @@ app.post(
   controller.deleteShop
 );
 
-app.put(
+app.patch(
   "/editprofile/",
   [authJwt.verifyToken],
   controller.edit

@@ -34,7 +34,7 @@ module.exports = {
     HOST: "localhost",
     USER: "root",
     PASSWORD: "",
-    DB: "khadamaty",
+    DB: "app",
     dialect: "mysql" ,
     retry  : {
 		match: [
@@ -58,8 +58,9 @@ module.exports = {
     },
     dialectOptions: {
 
-        connectTimeout: 60000
-      
+        connectTimeout: 60000 ,
+		collate: 'utf8_general_ci'
+
       }
       
       

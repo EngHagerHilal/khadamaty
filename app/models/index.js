@@ -7,8 +7,13 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   operatorsAliases: false ,
   retry : dbConfig.retry ,
   dialectOptions : dbConfig.dialectOptions
-
-});
+ ,
+ define: {
+  charset: 'utf8',
+  collate: 'utf8_general_ci', 
+  timestamps: true
+},
+} );
 
 const db = {};
 db.Sequelize = Sequelize;
@@ -37,7 +42,20 @@ db.customerservice.belongsTo(db.user);
 
 db.customer.belongsTo(db.user);
 
-db.order.belongsTo(db.user);
+db.order.belongsTo(db.user , {
+  as: 'user',
+  foreignKey: db.user.id 
+});
+
+db.order.belongsTo(db.user , {
+  as: 'phone',
+  foreignKey: db.user.phone 
+});
+
+db.order.belongsTo(db.user , {
+  as: 'username',
+  foreignKey: db.user.username
+});
 
 db.order.belongsTo(db.shop);
 
