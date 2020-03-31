@@ -1,8 +1,8 @@
-/*module.exports = {
-    HOST: "64.37.61.34",
-    USER: "leencome_khadamatyapp",
-    PASSWORD: "khadamatyapp",
-    DB: "leencome_khadamaty",
+module.exports = {
+    HOST: "cleardb.net",
+    USER: "bd6980830dfc46:16a2c947",
+    PASSWORD: "us-cdbr-iron-east-01",
+    DB: "heroku_8c183c364711755",
     dialect: "mysql" ,
     port : "2083" ,
     retry  : {
@@ -26,10 +26,12 @@
 		max  : 5
     },
     dialectOptions: {
-        connectTimeout: 60000  
+		connectTimeout: 60000  
+		
     } 
 };
-*/
+
+/*
 module.exports = {
     HOST: "localhost",
     USER: "root",
@@ -65,4 +67,4 @@ module.exports = {
       }
       
       
-};
+};*/
