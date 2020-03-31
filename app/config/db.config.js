@@ -35,7 +35,8 @@ module.exports = {
     USER: "root",
     PASSWORD: "",
     DB: "app",
-    dialect: "mysql" ,
+	dialect: "mysql" || "postgres" ,
+	HEROKU_POSTGRESQL_GRAY_URL : "postgres://buvixahfmwttok:5490fdbd04ed864226739d1d1f9a39c520afe4f8877d7d3f5b5ff33127a48132@ec2-34-200-101-236.compute-1.amazonaws.com:5432/d98jmi83m7lqmt",
     retry  : {
 		match: [
 			/ETIMEDOUT/,

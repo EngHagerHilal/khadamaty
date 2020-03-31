@@ -1,6 +1,16 @@
 const dbConfig = require("../config/db.config.js");
 const Sequelize = require("sequelize");
-const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+if (process.env.HEROKU_POSTGRESQL_BRONZE_URL) {
+  sequelize =new Sequelize(process.env.HEROKU_POSTGRESQL_BRONZE_URL,
+    {
+      dialect: "postgres" || "mysql",
+      
+      port: 5432,
+      host: "ec2-34-200-101-236.compute-1.amazonaws.com",
+      logging: true //false
+   });
+  } else {
+ sequelize = new Sequelize( dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
   port : dbConfig.port,
   dialect: dbConfig.dialect,
@@ -14,7 +24,7 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   timestamps: true
 },
 } );
-
+}
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
