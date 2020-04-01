@@ -16,6 +16,11 @@ const Sequelize = require("sequelize");
 },
 } );
 
+/*
+sequelize = new Sequelize('postgres://lbsropkwleclal:f680294f8688af7d6dc206a5e1256c94a9d5fffa1ec1be43108d176f623ae72d@ec2-3-91-112-166.compute-1.amazonaws.com:5432/dbike1cn7bstml', {
+  logging: false,
+  });
+*/  
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
