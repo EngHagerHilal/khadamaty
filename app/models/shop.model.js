@@ -14,8 +14,7 @@ module.exports = (sequelize, Sequelize) => {
         type : Sequelize.STRING 
       },
       addresse : {
-        type : Sequelize.STRING ,
-        
+        type : Sequelize.STRING ,  
       },
       city : {
         type : Sequelize.ENUM , 
