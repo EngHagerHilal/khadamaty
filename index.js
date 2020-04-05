@@ -36,7 +36,7 @@ db
   .query('SET FOREIGN_KEY_CHECKS = 0', {raw: true})
   .then(async function() {
   //await db.sequelize.sync({force: true})
-   return await initial();
+ return await initial();
 });  
 
 async function initial() {

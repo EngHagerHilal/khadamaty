@@ -126,7 +126,23 @@ exports.filter = ( req , res ) => {
 
 exports.showAllOrders = (req , res) =>{
 
-    Order.findAll().then(orders => res.send( {data : orders}));
+    Order.findAll({order: [["createdAt" ,'DESC']]}).then(orders => res.send( {data : orders}));
+};
+exports.showAllBindingOrders = (req , res) =>{
+
+    Order.findAll({where : {status : null} , order: [["createdAt" ,'DESC']] } ).then(orders => res.send( {data : orders}));
+}
+exports.showAllAcceptedOrders = (req , res) =>{
+
+    Order.findAll({where : {status : 'Accepted'} , order: [["createdAt" ,'DESC']] } ).then(orders => res.send( {data : orders}));
+}
+exports.showAllRejectedOrders = (req , res) =>{
+
+    Order.findAll({where : {status : 'Rejected'} , order: [["createdAt" ,'DESC']] } ).then(orders => res.send( {data : orders}));
+}
+exports.showAllCompletedOrders = (req , res) =>{
+
+    Order.findAll({where : {status : 'Completed'} , order: [["createdAt" ,'DESC']] } ).then(orders => res.send( {data : orders}));
 }
 
 exports.showAvailableShops = ( req , res ) => {
@@ -137,21 +153,8 @@ exports.showAvailableShops = ( req , res ) => {
     });
     city = req.params.city ;
     service = req.params.service ;
-    
-    //Order.findAll( {where : {userId : userId}}).then((orders) =>
-    
-    //{
-        // res.send ({ city : orders[0].city} ) 
-   // city = orders[0].city;
-    Shop.findAll(  { where : {service : service , city : city , verified : true}  }).then((shops) => res.send( {data : shops})).catch( err => res.send({msg : err.message}));
-//}
-//).catch( err=>res.send({ msg : err.message}));
-
-   // Customer.findAll( {where : {userId : userId}}).then((customers) => res.send ({ city : customers[0].city} ) ).catch( err=>res.send({ msg : err.message}));
-    
-   // Service.findAll({ where: {title : service } }).then((service) => res.send({ serviceId : service.id})).catch(err => res.send({msg : err.message}));
-}
-
+        Shop.findAll(  { where : {service : service , city : city , verified : true}  }).then((shops) => res.send( {data : shops})).catch( err => res.send({msg : err.message}));
+};
 
 exports.showShopOrders = ( req , res ) => {
     let token = req.headers["x-access-token"];
@@ -161,7 +164,52 @@ exports.showShopOrders = ( req , res ) => {
     Shop.findAll({ where : {userId : userId}}).then(
         (result)=> {
             console.log(result[0].shopid)
-    Order.findAll({ where : {shopShopId : result[0].shopid} }).then((orders) => res.send( {data : orders})).catch( err => res.send({msg : err.message}));
+    Order.findAll({ where : {shopShopId : result[0].shopid} , order: [["createdAt" ,'DESC']] , limit : 200 } ).then((orders) => res.send( {data : orders})).catch( err => res.send({msg : err.message}));
+});
+}
+
+exports.showShopBindingOrders = ( req , res ) => {
+    let token = req.headers["x-access-token"];
+    jwt.verify(token, config.secret, (err, decoded) => {
+      userId = decoded.id;
+    });
+    Shop.findAll({ where : {userId : userId}}).then(
+        (result)=> {
+            console.log(result[0].shopid)
+    Order.findAll({ where : {shopShopId : result[0].shopid , status : null} , order: [["createdAt" ,'DESC']]}).then((orders) => res.send( {data : orders})).catch( err => res.send({msg : err.message}));
+});
+}
+exports.showShopAcceptedOrders = ( req , res ) => {
+    let token = req.headers["x-access-token"];
+    jwt.verify(token, config.secret, (err, decoded) => {
+      userId = decoded.id;
+    });
+    Shop.findAll({ where : {userId : userId}}).then(
+        (result)=> {
+            console.log(result[0].shopid)
+    Order.findAll({ where : {shopShopId : result[0].shopid , status : 'Accepted'} , order: [["updatedAt" ,'DESC']] }).then((orders) => res.send( {data : orders})).catch( err => res.send({msg : err.message}));
+});
+}
+exports.showShopRejectedOrders = ( req , res ) => {
+    let token = req.headers["x-access-token"];
+    jwt.verify(token, config.secret, (err, decoded) => {
+      userId = decoded.id;
+    });
+    Shop.findAll({ where : {userId : userId}}).then(
+        (result)=> {
+            console.log(result[0].shopid)
+    Order.findAll({ where : {shopShopId : result[0].shopid , status : 'Rejected'} , order: [["updatedAt" ,'DESC']] , limit: 50}).then((orders) => res.send( {data : orders})).catch( err => res.send({msg : err.message}));
+});
+}
+exports.showShopCompletedOrders = ( req , res ) => {
+    let token = req.headers["x-access-token"];
+    jwt.verify(token, config.secret, (err, decoded) => {
+      userId = decoded.id;
+    });
+    Shop.findAll({ where : {userId : userId}}).then(
+        (result)=> {
+            console.log(result[0].shopid)
+    Order.findAll({ where : {shopShopId : result[0].shopid , status : 'Completed'} , order: [["updatedAt" ,'DESC']] , limit: 50}).then((orders) => res.send( {data : orders})).catch( err => res.send({msg : err.message}));
 });
 }
 
@@ -171,5 +219,60 @@ exports.showMyOrders = ( req , res ) => {
     jwt.verify(token, config.secret, (err, decoded) => {
       userId = decoded.id;
     });
-    Order.findAll( {where :{userId : userId }}).then((orders) => res.send( {data : orders})).catch( err => res.send({msg : err.message}));
+    Order.findAll( {where :{userId : userId } ,order: [["createdAt" ,'DESC']], limit : 200}).then((orders) => res.send( {data : orders})).catch( err => res.send({msg : err.message}));
+}
+
+exports.showMyAccptedOrders = ( req , res ) => {
+    let token = req.headers["x-access-token"];
+    let id = null ;
+    jwt.verify(token, config.secret, (err, decoded) => {
+      userId = decoded.id;
+    });
+    Order.findAll( {where :{userId : userId , status : 'Accepted'} ,order: [["updatedAt" ,'DESC']]}).then((orders) => res.send( {data : orders})).catch( err => res.send({msg : err.message}));
+}
+
+exports.showMyRejectedOrders = ( req , res ) => {
+    let token = req.headers["x-access-token"];
+    let id = null ;
+    jwt.verify(token, config.secret, (err, decoded) => {
+      userId = decoded.id;
+    });
+    Order.findAll( {where :{userId : userId , status : 'Rejected'} ,order: [["updatedAt" ,'DESC']], limit : 50}).then((orders) => res.send( {data : orders})).catch( err => res.send({msg : err.message}));
+}
+
+exports.showMyCompletedOrders = ( req , res ) => {
+    let token = req.headers["x-access-token"];
+    let id = null ;
+    jwt.verify(token, config.secret, (err, decoded) => {
+      userId = decoded.id;
+    });
+    Order.findAll( {where :{userId : userId , status : 'Completed'} ,order: [["updatedAt" ,'DESC']], limit : 50}).then((orders) => res.send( {data : orders})).catch( err => res.send({msg : err.message}));
+}
+
+exports.showMyBingingOrders = ( req , res ) => {
+    let token = req.headers["x-access-token"];
+    let id = null ;
+    jwt.verify(token, config.secret, (err, decoded) => {
+      userId = decoded.id;
+    });
+    Order.findAll( {where :{userId : userId , status : null} ,order: [["createdAt" ,'DESC']], limit : 200}).then((orders) => res.send( {data : orders})).catch( err => res.send({msg : err.message}));
+}
+
+exports.cancelOrder = ( req , res ) => {
+    let token = req.headers["x-access-token"];
+    let id = null ;
+    jwt.verify(token, config.secret, (err, decoded) => {
+      userId = decoded.id;
+    });
+    orderid : this.body.orderid
+    Order.findByPk(orderid).then( order => {
+        if ( order.status == null) {
+            Order.destroy (  {
+                where :{ id : orderid}
+              }).then(()=> res.send ( { msg : "Cancelled Successfully"}))
+        }
+        else {
+            res.send({ msg : "You can't cancel order now !"})
+        }
+    })
 }

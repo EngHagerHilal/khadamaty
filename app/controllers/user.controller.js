@@ -12,12 +12,20 @@ exports.allAccess = (req, res) => {
 };
 
 exports.allCustomers =  (req , res) => {
-  Customer.findAll().then(customers => res.send({data : customers}));
+  Customer.findAll({order:[ ["createdAt" , 'DESC']]}).then(customers => res.send({data : customers}));
 }  
 
 
 exports.allShops =  (req , res) => {
-  Shop.findAll().then(shops => res.send({data : shops}));
+  Shop.findAll({order:[ ["createdAt" , 'DESC']]}).then(shops => res.send({data : shops}));
+}
+
+exports.allVerifiedShops =  (req , res) => {
+  Shop.findAll({ where : { verified : true } , order: [ ["createdAt" , 'DESC']]}).then(shops => res.send({data : shops}));
+}
+
+exports.allBindingShops =  (req , res) => {
+  Shop.findAll({ where : { verified : false } , order: [ ["createdAt" , 'DESC']]}).then(shops => res.send({data : shops}));
 }
 /*
 exports.customerBoard = (req, res) => {
@@ -54,7 +62,7 @@ Shop.update ( { verified : true  } , {
   where :{ shopid : shopid}
 }).then ( done => {
   if (done) 
-  res.send({ message: "User was created successfully!" });
+  res.send({ message: "Verified" });
   else 
   res.send({ message: "Something went wrong" });
 }).catch(err => {
@@ -111,7 +119,6 @@ exports.getMyProfile = ( req , res) => {
   jwt.verify(token, config.secret, (err, decoded) => {
     console.log(decoded)
     userId = decoded.id;
-
   User.findByPk ( userId).then((user) =>
 {
   Customer.findAll({ where :{ UserId : userId }}).then (customers =>

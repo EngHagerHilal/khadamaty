@@ -37,8 +37,16 @@ app.get(
   [authJwt.verifyToken, authJwt.isAdmin],
   controller.allShops
 );
-
-
+app.get(
+  "/allverifiedshops",
+  [authJwt.verifyToken, authJwt.isAdmin],
+  controller.allVerifiedShops
+);
+app.get(
+  "/allbindingshops",
+  [authJwt.verifyToken, authJwt.isAdmin],
+  controller.allBindingShops
+);
 app.get(
   "/exploreshop/:shopid",
   [authJwt.verifyToken ],
@@ -52,32 +60,32 @@ app.post(
 );
 
 app.post(
-  "/verifyShop/",
+  "/verifyShop",
   [authJwt.verifyToken, authJwt.isAdmin],
   controller.verifyShop
 );
 
 app.post(
-  "/deactivateShop/",
+  "/deactivateShop",
   [authJwt.verifyToken, authJwt.isAdmin],
   controller.deactivateShop
 );
 
 
 app.post(
-  "/deleteShop/",
+  "/deleteShop",
   [authJwt.verifyToken, authJwt.isAdmin],
   controller.deleteShop
 );
 
 app.patch(
-  "/editprofile/",
+  "/editprofile",
   [authJwt.verifyToken],
   controller.edit
 );
 
 app.get(
-  "/getadminprofile/" ,
+  "/getadminprofile" ,
   [authJwt.verifyToken],
   controller.getAdminProfile
 )

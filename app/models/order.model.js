@@ -11,7 +11,8 @@ module.exports = (sequelize, Sequelize) => {
     },
     status : {
         type : Sequelize.ENUM , 
-        values : ['Completed'  , 'Accepted' , 'Rejected' ]
+        values : ['Completed'  , 'Accepted' , 'Rejected' ] ,
+        defaultValue : null 
     },
     description : {
         type : Sequelize.STRING

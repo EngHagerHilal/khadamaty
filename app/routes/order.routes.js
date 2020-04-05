@@ -11,46 +11,43 @@ app.use(function(req, res, next) {
         );
         next();
 });
-
-
-
 app.post(
-    "/addOrder/",
+    "/addOrder",
     [authJwt.verifyToken, authJwt.isCustomer],
     controller.addOrder
 );
 app.patch(
-    "/createOrder/",
+    "/createOrder",
     [authJwt.verifyToken, authJwt.isCustomer],
     controller.CreateOrder
 );
 
 
 app.patch(
-    "/addShopToOrder/",
+    "/addShopToOrder",
     [authJwt.verifyToken, authJwt.isCustomer],
     controller.addShopToOrder 
 );
 
 app.patch(
-    "/acceptOrder/",
+    "/acceptOrder",
     [authJwt.verifyToken, authJwt.isShop],
     controller.acceptOrder 
 );
 
 app.patch(
-    "/completeOrder/",
+    "/completeOrder",
     [authJwt.verifyToken, authJwt.isShop],
     controller.CompleteOrder 
 );
 app.patch(
-    "/rejectOrder/",
+    "/rejectOrder",
     [authJwt.verifyToken, authJwt.isShop],
     controller.rejectOrder 
 );
 
 app.get(
-    "/filterorders/",
+    "/filterorders",
     [authJwt.verifyToken],
     controller.filter 
 );
@@ -62,19 +59,90 @@ app.get(
 );
 
 app.get(
-    "/showshoporders/",
+    "/showshoporders",
     [authJwt.verifyToken , authJwt.isShop],
     controller.showShopOrders 
 );
 app.get(
+    "/showshopbindingorders",
+    [authJwt.verifyToken , authJwt.isShop],
+    controller.showShopBindingOrders 
+);
+
+app.get(
+    "/showshopacceptedorders",
+    [authJwt.verifyToken , authJwt.isShop],
+    controller.showShopAcceptedOrders
+);
+
+app.get(
+    "/showshoprejectedorders",
+    [authJwt.verifyToken , authJwt.isShop],
+    controller.showShopRejectedOrders 
+);
+app.get(
+    "/showshopcompletedorders",
+    [authJwt.verifyToken , authJwt.isShop],
+    controller.showShopCompletedOrders 
+);
+
+app.get(
     "/Myorders" ,
     [ authJwt.verifyToken , authJwt.isCustomer] ,
     controller.showMyOrders
-)
+);
+
+app.get(
+    "/Myacceptedorders" ,
+    [ authJwt.verifyToken , authJwt.isCustomer] ,
+    controller.showMyAccptedOrders
+);
+
+app.get(
+    "/Myrejectedorders" ,
+    [ authJwt.verifyToken , authJwt.isCustomer] ,
+    controller.showMyRejectedOrders
+);
+
+app.get(
+    "/Mybindingorders" ,
+    [ authJwt.verifyToken , authJwt.isCustomer] ,
+    controller.showMyBingingOrders
+);
+app.get(
+    "/Mycompletedorders" ,
+    [ authJwt.verifyToken , authJwt.isCustomer] ,
+    controller.showMyCompletedOrders
+);
 
 app.get(
     "/Allorders" ,
     [ authJwt.verifyToken , authJwt.isAdmin] ,
     controller.showAllOrders
-)
+);
+
+app.get(
+    "/Allbindingorders" ,
+    [ authJwt.verifyToken , authJwt.isAdmin] ,
+    controller.showAllBindingOrders
+);
+app.get(
+    "/Allaacceptedorders" ,
+    [ authJwt.verifyToken , authJwt.isAdmin] ,
+    controller.showAllAcceptedOrders
+);
+app.get(
+    "/Allrejectedorders" ,
+    [ authJwt.verifyToken , authJwt.isAdmin] ,
+    controller.showAllRejectedOrders
+);
+app.get(
+    "/Allcompletedorders" ,
+    [ authJwt.verifyToken , authJwt.isAdmin] ,
+    controller.showAllCompletedOrders
+);
+
+
+
+
 };
