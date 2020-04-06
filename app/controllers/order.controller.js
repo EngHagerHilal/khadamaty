@@ -22,7 +22,7 @@ exports.addOrder = (req, res) => {
         User.findByPk(userid).then(user => {
             console.log(user.phone) ;
             console.log(user.username);
-     Order.update( { userId: userid , phone : user.phone , username : user.username  } , { where : {id : order.id}}).then(()=> res.send({msg : "Order Created successfully!" , data : order})).catch(err => res.send({msg : err.message}))
+     Order.update( { userId: userid , phone : user.phone , username : user.username  } , { where : {id : order.id}}).then(()=> res.send({msg : "Order Created successfully!" , data : order})).catch(err => res.send({message : err.message}))
     })
 });
 };

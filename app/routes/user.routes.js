@@ -28,23 +28,23 @@ app.get(
 );
 app.get(
   "/allcustomers",
-  [authJwt.verifyToken, authJwt.isAdmin],
+  [authJwt.verifyToken],
   controller.allCustomers
 );
 
 app.get(
   "/allshops",
-  [authJwt.verifyToken, authJwt.isAdmin],
+  [authJwt.verifyToken],
   controller.allShops
 );
 app.get(
   "/allverifiedshops",
-  [authJwt.verifyToken, authJwt.isAdmin],
+  [authJwt.verifyToken],
   controller.allVerifiedShops
 );
 app.get(
   "/allbindingshops",
-  [authJwt.verifyToken, authJwt.isAdmin],
+  [authJwt.verifyToken],
   controller.allBindingShops
 );
 app.get(
@@ -61,7 +61,7 @@ app.post(
 
 app.post(
   "/verifyShop",
-  [authJwt.verifyToken, authJwt.isAdmin],
+  [authJwt.verifyToken],
   controller.verifyShop
 );
 
@@ -74,7 +74,7 @@ app.post(
 
 app.post(
   "/deleteShop",
-  [authJwt.verifyToken, authJwt.isAdmin],
+  [authJwt.verifyToken],
   controller.deleteShop
 );
 
@@ -84,10 +84,46 @@ app.patch(
   controller.edit
 );
 
+app.patch(
+  "/changepassword",
+  [authJwt.verifyToken],
+  controller.changepassword
+);
 app.get(
   "/getadminprofile" ,
-  [authJwt.verifyToken],
+  [authJwt.verifyToken , authJwt.isAdmin],
   controller.getAdminProfile
 )
+
+app.get(
+  "/getcustomerserviceprofile" ,
+  [authJwt.verifyToken , authJwt.isCustomerService],
+  controller.getCustomerServiceProfile
+)
+app.get(
+  "/getallcustomerservices" ,
+  [authJwt.verifyToken , authJwt.isAdmin],
+  controller.allCustomerServices
+);
+
+app.get(
+  "/getallavailablecustomerservices" ,
+  [authJwt.verifyToken , authJwt.isAdmin],
+  controller.allAvailableCustomerServices
+);
+
+app.get(
+  "/getallunavailablecustomerservices" ,
+  [authJwt.verifyToken , authJwt.isAdmin],
+  controller.allUnavailableCustomerServices
+);
+
+app.get(
+  "/contactcustomerservice" ,
+  [authJwt.verifyToken ],
+  controller.contactCustomerService
+);
+
+
 
 };

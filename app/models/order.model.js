@@ -15,10 +15,12 @@ module.exports = (sequelize, Sequelize) => {
         defaultValue : null 
     },
     description : {
-        type : Sequelize.STRING
+        type : Sequelize.STRING ,
+        allowNull : false
     },
     city : {
         type : Sequelize.ENUM , 
+        allowNull : false ,
         values : ['Abha' , 'Al-Ahsa' , 'Al-Khobar' , 'Baha', 'Dammam', 'Dhahran', 'Hail', 'Jeddah', 'Jizan', 'Jouf', 'Jubail', 'Madinah', 'Makkah', 'Najran', 'Qassem', 'Qatif', 'Riyadh', 'Tabouk', 'Taif', 'Yanbu' 
         ]
     }
@@ -26,7 +28,7 @@ module.exports = (sequelize, Sequelize) => {
     service : {
         type : Sequelize.ENUM , 
         values : ['Electrical' , 'Plumbing' , 'Air Conditioning' , 'Construction', 'Home Appliances', 'Electronics', 'Decoration', 'Upholstery', 'Curtains', 'Swimming Pool', 'Tiles', 'LandScape', 'Aluminum and Glass', 'Wrought Iron', 'Carpentry', 'Move and installation of Furniture', 'Umbrellas and Tents', 'Designing', 'Cleaning', 'Painting'  ],
-       // allowNull: false
+        allowNull: false
     },
     phone : {
         type : Sequelize.STRING 

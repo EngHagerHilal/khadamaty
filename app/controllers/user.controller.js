@@ -3,6 +3,8 @@ const User = db.user;
 const Shop = db.shop ;
 const Customer = db.customer ;
 const Customerservice = db.customerservice ;
+const Admin = db.admin;
+
 var bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config.js");
@@ -13,8 +15,25 @@ exports.allAccess = (req, res) => {
 
 exports.allCustomers =  (req , res) => {
   Customer.findAll({order:[ ["createdAt" , 'DESC']]}).then(customers => res.send({data : customers}));
-}  
+}
 
+exports.allCustomerServices =  (req , res) => {
+  Customerservice.findAll({order:[ ["createdAt" , 'DESC']]}).then(customerservices => res.send({data : customerservices}));
+}  
+exports.allAvailableCustomerServices =  (req , res) => {
+  Customerservice.findAll({ where : { available : true } , order: [ ["updatedAt" , 'DESC']]}).then(customerservices => res.send({data : customerservices}));
+}
+
+exports.allUnavailableCustomerServices =  (req , res) => {
+  Customerservice.findAll({ where : { available : false } , order: [ ["updatedAt" , 'DESC']]}).then(customerservices => res.send({data : customerservices}));
+}
+
+exports.contactCustomerService = (req , res) =>{
+  Customerservice.findAll({ where : {available : true}}).then (customerservices =>{
+  let num = Math.floor(Math.random() * (customerservices.length - 0 + 1) + 0 )
+  res.seng ( { customerservice : customerservices[num]});
+  })
+}
 
 exports.allShops =  (req , res) => {
   Shop.findAll({order:[ ["createdAt" , 'DESC']]}).then(shops => res.send({data : shops}));
@@ -46,7 +65,8 @@ User.create(
     username: req.body.username,
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8) ,
-    role : "customerservice"
+    role : "customerservice" ,
+    phone :req.body.phone
 }).then((user) => {
     console.log (user.id)
     Customerservice.create ({ 'userId' : user.id }).catch((err)=> res.send(err))
@@ -109,8 +129,12 @@ exports.edit = ( req , res) => {
   User.update( { username : req.body.username , email : req.body.email , phone : req.body.phone } ,{ where : { id : userId} });
   Customer.update ( req.body ,{ where : { userId : userId} });
   Shop.update ( req.body ,{ where : { userId : userId} });
-  User.update (  {password: bcrypt.hashSync(req.body.password, 8)} ,{ where : {id : userId} } );
+  Customerservice.update ( req.body ,{ where : { userId : userId} });
+  Admin.update ( req.body ,{ where : { userId : userId} });
+
+  //User.update (  {password: bcrypt.hashSync(req.body.password, 8)} ,{ where : {id : userId} } );
   res.send({msg : "updated"})
+
 }
 
 
@@ -147,6 +171,22 @@ exports.getAdminProfile = ( req , res) => {
 })
 });
 };
+
+exports.getCustomerServiceProfile = ( req , res) => {
+  let token = req.headers["x-access-token"];
+  jwt.verify(token, config.secret, (err, decoded) => {
+    console.log(decoded)
+    userId = decoded.id;
+  User.findByPk ( userId).then((user) =>
+{
+  
+      res.send ( {  email : user.email , username :user.username , password : user.password , phone : user.phone })
+
+})
+});
+};
+
+
 
 exports.getMyShopProfile = ( req , res) => {
   let token = req.headers["x-access-token"];
@@ -185,5 +225,36 @@ exports.exploreShop = ( req , res) =>{
   })
 })
 }
+
+exports.changepassword = (req , res) => {
+  let token = req.headers["x-access-token"];
+  jwt.verify(token, config.secret, (err, decoded) => {
+    console.log(decoded)
+    userId = decoded.id;
+    role = decoded.role
+  });
+  User.findByPk(userId).then(user => {
+   username1 = user.username ;
+   oldpassword = req.body.oldpassword ;
+   newpassword = req.body.newpassword ;
+   newpassword_ = req.body.newpassword_ ;
+   var passwordIsValid = bcrypt.compareSync(
+    oldpassword,
+    user.password
+   );
+   if (!passwordIsValid) {
+    return res.status(401).send({
+      accessToken: null,
+      message: "Wrong Password!"
+    })
+  }else {
+if ( newpassword === newpassword_){
+  User.update( {password  : bcrypt.hashSync(req.body.newpassword, 8)} , { where : { id : userId}}).then(()=> res.status(200).send("updated"));
+}else {
+  res.send("unmatching passwords");
+}
+  }
+  })
+};
 
 

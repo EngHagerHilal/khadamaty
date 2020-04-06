@@ -43,7 +43,7 @@ exports.signup = (req, res) => {
             Customer.update ( req.body , {where : { userId : user.id} })
             res.send({ msg: "User was registered successfully!" });
         }).catch(err => {
-          User.destroy( {where: { id: user.id } }).then(res.send( {msg : err.message , status: res.status}  ))});        
+          User.destroy( {where: { id: user.id } }).then(res.send( {message : err.message , status: res.status}  ))});        
             break;
           case "shop":
             /// description
@@ -51,7 +51,7 @@ exports.signup = (req, res) => {
           Shop.update ( {userId : user.id} , {where : {shopid : shop.shopid} })
           res.send({ msg: "Shop was registered successfully!" });
         }).catch(err => {
-          User.destroy( {where: { id: user.id } }).then(res.send( {msg :err.message , status: res.status}))});
+          User.destroy( {where: { id: user.id } }).then(res.send( {message :err.message , status: res.status}))});
           break;
           default:
           User.destroy({
@@ -62,7 +62,7 @@ exports.signup = (req, res) => {
       res.status(404).send({msg : "Role Not Found"})
     })
     .catch(err => {
-      res.status(500).send({msg : err.errors[0].message , status : res.status} );
+      res.status(500).send({message : err.errors[0].message , status : res.status} );
     });
 };
 

@@ -44,7 +44,7 @@ module.exports = (sequelize, Sequelize) => {
                 },
                 isSaudi(value) {
                     if ( value.startsWith("966") == false ){
-                        res.status(428 ).send({
+                        res.status(428).send({
                             message: "Invalid phone number " 
                           });
                     }

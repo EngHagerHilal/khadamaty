@@ -35,7 +35,7 @@ db
   .sequelize
   .query('SET FOREIGN_KEY_CHECKS = 0', {raw: true})
   .then(async function() {
-  //await db.sequelize.sync({force: true})
+//  await db.sequelize.sync({force: true})
  return await initial();
 });  
 
@@ -50,7 +50,6 @@ async function initial() {
         Admin.create(user)
       })
 };
-
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3000;

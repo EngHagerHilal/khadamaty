@@ -28,7 +28,7 @@ module.exports = {
     dialectOptions: {
 		connectTimeout: 60000  ,
 		collate: 'utf8_general_ci'
-    } 
+    }
 };
 
 /*

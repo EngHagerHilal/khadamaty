@@ -20,6 +20,7 @@ module.exports = (sequelize, Sequelize) => {
         type : Sequelize.ENUM , 
         values : ['Abha' , 'Al-Ahsa' , 'Al-Khobar' , 'Baha', 'Dammam', 'Dhahran', 'Hail', 'Jeddah', 'Jizan', 'Jouf', 'Jubail', 'Madinah', 'Makkah', 'Najran', 'Qassem', 'Qatif', 'Riyadh', 'Tabouk', 'Taif', 'Yanbu' 
         ],
+        allowNull : false
       
       },
       service : {
